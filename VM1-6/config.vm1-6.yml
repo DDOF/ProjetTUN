@@ -15,9 +15,13 @@
        ignore_errors: True # permet à ansible de continuer
      - shell: nmcli connection del "Connexion filaire 2"
        ignore_errors: True # permet à ansible de continuer      
-     - shell: nmcli connection add ifname eth1 con-name ansible-eth1 type ethernet ip4 172.16.2.156 gw4 172.16.2.151    
-     - shell: nmcli connection add ifname eth2 con-name ansible-eth2 type ethernet ip6 fc00:1234:1::16 gw6 fc00:1234:1::26
+     - shell: nmcli connection add ifname eth1 con-name ansible-eth1 type ethernet ip4 172.16.2.156 gw4 172.16.2.151
+     - shell: nmcli connection add ifname eth2 con-name ansible-eth2 type ethernet ip6 fc00:1234:1::16/64 gw6 fc00:1234:1::26
      - shell: ip route del default
        ignore_errors: True # permet à ansible de continuer
-
-      
+     - shell: ip route add 172.16.2.128/28 via 172.16.2.151 dev eth1
+       ignore_errors: True # permet à ansible de continuer      
+     - shell: ip route add 172.16.2.160/28 via 172.16.2.151 dev eth1
+       ignore_errors: True # permet à ansible de continuer
+     - shell: ip route add 172.16.2.176/28 via 172.16.2.151 dev eth1
+       ignore_errors: True # permet à ansible de continuer      

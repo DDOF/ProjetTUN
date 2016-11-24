@@ -15,7 +15,12 @@
        ignore_errors: True # permet à ansible de continuer       
      - shell: nmcli connection del "ansible-eth2"
        ignore_errors: True # permet à ansible de continuer
-     - shell: nmcli connection add ifname eth1 con-name ansible-eth1 type ethernet ip4 172.16.2.163/28 gw4 172.16.2.162
-     - shell: nmcli connection add ifname eth1 con-name ansible-eth2 type ethernet ip4 172.16.2.183/28 gw4 172.16.2.186
+     - shell: nmcli connection add ifname eth1 con-name ansible-eth1 type ethernet ip4 172.16.2.163/28
+     - shell: nmcli connection add ifname eth2 con-name ansible-eth2 type ethernet ip4 172.16.2.183/28
      - shell: ip route del default
        ignore_errors: True # permet à ansible de continuer
+     - shell: ip route add 172.16.2.128/28 via 172.16.2.162 dev eth1
+       ignore_errors: True # permet à ansible de continuer
+     - shell: ip route add 172.16.2.144/28 via 172.16.2.162 dev eth1
+       ignore_errors: True # permet à ansible de continuer
+     - sysctl: name="net.ipv4.ip_forward" value=1 sysctl_set=yes state=present reload=yes
