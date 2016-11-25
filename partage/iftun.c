@@ -21,7 +21,6 @@ int tun_alloc(char *dev)
   	exit(1);
   }
      
-
   memset(&ifr, 0, sizeof(ifr));
 
   /* Flags: IFF_TUN   - TUN device (no Ethernet headers) 
@@ -41,6 +40,18 @@ int tun_alloc(char *dev)
   return fd;
 }
 int main (int argc, char** argv){
-	//TODO
-	return 0;
+	int fd = 0;
+  if (argc != 2) {
+    printf("usage : tun_name %s\n",argv[0]);
+    exit(1);
+  }
+	char cmd[128];
+
+  fd = tun_alloc(argv[1]);
+
+  sprintf(cmd,"./configure-tun.sh %s",argv[1]);
+  system(cmd);
+
+  getchar();
+  return fd;
 }
