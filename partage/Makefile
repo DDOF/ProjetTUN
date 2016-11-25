@@ -1,9 +1,10 @@
 # Makefile (règles implicites)
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra
+EXEC = iftun
 
-tout: iftun
+all: $(EXEC)
 
 clean:
-	rm *.o
+	rm -rf $(EXEC)
