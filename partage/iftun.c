@@ -39,6 +39,13 @@ int tun_alloc(char *dev)
   strcpy(dev, ifr.ifr_name);
   return fd;
 }
+void rewrite(int src,int dest){
+ while(1){
+  char c[2048];
+  read(src,c,2048);
+  write(dest,c,2048);
+}
+}
 int main (int argc, char** argv){
 	int fd = 0;
   if (argc != 2) {
@@ -52,6 +59,6 @@ int main (int argc, char** argv){
   sprintf(cmd,"./configure-tun.sh %s",argv[1]);
   system(cmd);
 
-  getchar();
+  rewrite(fd,1);
   return fd;
 }
