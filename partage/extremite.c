@@ -110,7 +110,7 @@ return EXIT_SUCCESS;
 }
 
 
-int ext_out()
+int ext_out(int tunfd)
 {
   int s,n; /* descripteurs de socket */
   int len,on; /* utilitaires divers */
@@ -163,30 +163,30 @@ int ext_out()
     exit(6);
   }
   fprintf(stderr,"listen!\n");
-
-  while(1) {
-    /* attendre et gérer indéfiniment les connexions entrantes */
-    len=sizeof(struct sockaddr);
-    if( (n=accept(s,(struct sockaddr*)&client,(socklen_t*)&len)) < 0 ) {
-      perror("accept");
-      exit(7);
-    }
-    /* Nom réseau du client */
-    char hotec[NI_MAXHOST];  char portc[NI_MAXSERV];
-    err = getnameinfo((struct sockaddr*)&client,len,hotec,NI_MAXHOST,portc,NI_MAXSERV,0);
-    if (err < 0 ){
-      fprintf(stderr,"résolution client (%i): %s\n",n,gai_strerror(err));
-    }else{ 
-      fprintf(stderr,"accept! (%i) ip=%s port=%s\n",n,hotec,portc);
-    }
-    /* traitement */
-    echo(n);
-  }
+  echo(s,tunfd);
+  // while(1) {
+  //   /* attendre et gérer indéfiniment les connexions entrantes */
+  //   len=sizeof(struct sockaddr);
+  //   if( (n=accept(s,(struct sockaddr*)&client,(socklen_t*)&len)) < 0 ) {
+  //     perror("accept");
+  //     exit(7);
+  //   }
+  //   /* Nom réseau du client */
+  //   char hotec[NI_MAXHOST];  char portc[NI_MAXSERV];
+  //   err = getnameinfo((struct sockaddr*)&client,len,hotec,NI_MAXHOST,portc,NI_MAXSERV,0);
+  //   if (err < 0 ){
+  //     fprintf(stderr,"résolution client (%i): %s\n",n,gai_strerror(err));
+  //   }else{ 
+  //     fprintf(stderr,"accept! (%i) ip=%s port=%s\n",n,hotec,portc);
+  //   }
+  //   /* traitement */
+  //   echo(n,tunfd);
+  // }
   return EXIT_SUCCESS;
 }
 
 /* echo des messages reçus (le tout via le descripteur f) */
-void echo(int f)
+void echo(int f,int tunfd)
 {
   int lu; /* nb d'octets reçus */
   char tampon[MAXLIGNE+1]; 
@@ -205,7 +205,7 @@ void echo(int f)
         //fprintf(stderr,"[%s:%s](%i): %3i :%s",hote,port,pid,compteur,tampon);
         //snprintf(msg,MAXLIGNE,"%s",tampon);
         /* echo vers le client */
-        int s = write(1, tampon, lu);
+        int s = write(tunfd, tampon, lu);
          if (s == -1)
           {
             perror ("write");
