@@ -10,6 +10,10 @@
 #include <fcntl.h>
 #include <sys/ioctl.h>
 #include <sys/stat.h>
+#include "iftun.h"
+
+
+
 
 int tun_alloc(char *dev)
 {
@@ -46,13 +50,14 @@ void rewrite(int src,int dest){
   write(dest,c,2048);
 }
 }
+
 int main (int argc, char** argv){
-	int fd = 0;
+  int fd = 0;
   if (argc != 2) {
     printf("usage : tun_name %s\n",argv[0]);
     exit(1);
   }
-	char cmd[128];
+  char cmd[128];
 
   fd = tun_alloc(argv[1]);
 

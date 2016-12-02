@@ -2,7 +2,7 @@
 
 CC = gcc
 CFLAGS = -Wall -Wextra
-EXEC = iftun
+EXEC = iftun extremite
 
 all: $(EXEC)
 
