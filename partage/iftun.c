@@ -51,7 +51,7 @@ void rewrite(int src,int dest){
 }
 }
 
-int main (int argc, char** argv){
+/*int main (int argc, char** argv){
   int fd = 0;
   if (argc != 2) {
     printf("usage : tun_name %s\n",argv[0]);
@@ -66,4 +66,4 @@ int main (int argc, char** argv){
 
   rewrite(fd,1);
   return fd;
-}
+}*/
