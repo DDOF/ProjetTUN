@@ -10,6 +10,10 @@
 #include <fcntl.h>
 #include <sys/ioctl.h>
 #include <sys/stat.h>
+#include "iftun.h"
+
+
+
 
 int tun_alloc(char *dev)
 {
@@ -39,19 +43,27 @@ int tun_alloc(char *dev)
   strcpy(dev, ifr.ifr_name);
   return fd;
 }
-int main (int argc, char** argv){
-	int fd = 0;
+void rewrite(int src,int dest){
+ while(1){
+  char c[2048];
+  read(src,c,2048);
+  write(dest,c,2048);
+}
+}
+
+/*int main (int argc, char** argv){
+  int fd = 0;
   if (argc != 2) {
     printf("usage : tun_name %s\n",argv[0]);
     exit(1);
   }
-	char cmd[128];
+  char cmd[128];
 
   fd = tun_alloc(argv[1]);
 
   sprintf(cmd,"./configure-tun.sh %s",argv[1]);
   system(cmd);
 
-  getchar();
+  rewrite(fd,1);
   return fd;
-}
+}*/
