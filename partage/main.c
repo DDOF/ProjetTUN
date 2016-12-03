@@ -7,7 +7,7 @@
 
 int main (int argc, char** argv){
 	if (argc != 3) {
-	    printf("usage : tun_name %s\n",argv[0]);
+	    printf("usage : ext_out tunXXX %s\n",argv[0]);
 	    exit(1);
   	}
 		int pid;
@@ -19,11 +19,10 @@ int main (int argc, char** argv){
   		
   		if ((pid = fork ()) == 0) {
   			ext_out(fd);
-  			
+  			exit(1);
   		}
 		getchar();
 		ext_in(argv[1],fd);
-
 		return 0;
 
 }
