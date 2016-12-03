@@ -15,9 +15,9 @@
 /* taille maximale des lignes */
 #define MAXLIGNE 80
 
-int ext_in(char * hote, int tunfd)
+int ext_in(char * hote,char * port, int tunfd)
 {
-  char * port; /* port TCP du serveur */   
+
   char *ip; /* adresse IPv6 en notation pointée */
   struct addrinfo *resol,indic; /* struct pour la résolution de nom */
   int s; /* descripteur de socket */
@@ -29,7 +29,6 @@ int ext_in(char * hote, int tunfd)
 
 
 
-  port="123"; /* port TCP du serveur */   
 
   /* Résolution de l'hôte */
 	if ( getaddrinfo(hote,port,&indic, &resol) < 0 ){
@@ -74,7 +73,7 @@ int ext_in(char * hote, int tunfd)
 }
 
 
-int ext_out(int tunfd)
+int ext_out(int tunfd, char * port)
 {
   int s,n; /* descripteurs de socket */
   int len,on; /* utilitaires divers */
@@ -83,11 +82,10 @@ int ext_out(int tunfd)
 						   AF_INET6,SOCK_STREAM,0, /* IP mode connecté */
 	0,NULL,NULL,NULL};
   struct sockaddr_in6 client; /* adresse de socket du client */
-  char * port; /* Port pour le service */
   int err; /* code d'erreur */
 
 
-	port="123";
+	
 	fprintf(stderr,"Ecoute sur le port %s\n",port);
 	err = getaddrinfo(NULL,port,&indic,&resol); 
 	if (err<0){
