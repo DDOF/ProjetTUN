@@ -7,6 +7,10 @@
     # adresse IPv4 avec nmcli (CLI pour NetworkManager)
     # éventuellement, pour supprimer les connexions en trop, faire
     # $ nmcli connection del ansible-eth1
+     - name: Get daemon
+       apt:
+         name: daemon
+         state: latest
      - shell: nmcli connection del "Connexion filaire 1"
        ignore_errors: True # permet à ansible de continuer
      - shell: nmcli connection del ansible-eth1
@@ -20,7 +24,9 @@
      - shell: ip route del default
        ignore_errors: True # permet à ansible de continuer
      - sysctl: name="net.ipv4.ip_forward" value=1 sysctl_set=yes state=present reload=yes 
-     - shell: ip route add 172.16.2.151 dev eth1  proto static  scope link  metric 1024       
+     - shell: ip route add 172.16.2.151 dev eth1  proto static  scope link  metric 1024
+     - shell: pkill tunnel64d
+       ignore_errors: True 
      # - shell: ip route add 172.16.2.128/28 via 172.16.2.151 dev eth1
      #   ignore_errors: True # permet à ansible de continuer      
      # - shell: ip route add 172.16.2.160/28 via 172.16.2.151 dev eth1
