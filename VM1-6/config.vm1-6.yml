@@ -25,8 +25,6 @@
        ignore_errors: True # permet à ansible de continuer
      - sysctl: name="net.ipv4.ip_forward" value=1 sysctl_set=yes state=present reload=yes 
      - shell: ip route add 172.16.2.151 dev eth1  proto static  scope link  metric 1024
-     - shell: pkill tunnel64d
-       ignore_errors: True 
      # - shell: ip route add 172.16.2.128/28 via 172.16.2.151 dev eth1
      #   ignore_errors: True # permet à ansible de continuer      
      # - shell: ip route add 172.16.2.160/28 via 172.16.2.151 dev eth1
