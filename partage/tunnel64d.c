@@ -4,6 +4,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/types.h>
+#include <signal.h>
+
 #define MAX_LINE_LEN 256
 
 int main (int argc, char** argv){
@@ -35,15 +38,13 @@ int main (int argc, char** argv){
 			}
 			else if (strcmp(token,"inport") ==0 ) {
 				token= strtok( NULL, "\t =\n\r" ) ;
-				if (token) {
-					sprintf(inport,"%s",token );
-				}
+				sprintf(inport,"%s",token );
 			}
 			else if (strcmp(token,"options") == 0 ) {
 
 				token= strtok( NULL, "\t =\n\r" ) ;
 				if (token)
-				sprintf(options,"%s",token );
+					sprintf(options,"%s",token );
 			}
 			else if (strcmp(token ,"outip") ==0 ) {
 
@@ -61,15 +62,16 @@ int main (int argc, char** argv){
 	int fd = 0;
 	fd = tun_alloc(tun);
 	char cmd[256];
-	sprintf(cmd,"./configure-tun.sh %s %s",tun,inip);
+	sprintf(cmd,"/mnt/partage/./configure-tun.sh %s %s",tun,inip);
 	system(cmd);
 
 	if ((pid = fork ()) == 0) {
 		ext_out(fd,inport);
 		exit(1);
 	}
-	getchar(); //Attente autre bout du tunnel
+	//getchar(); //Attente autre bout du tunnel
 	ext_in(outip,outport,fd);
+	kill(pid, SIGKILL);
 	exit(1);
 
 }

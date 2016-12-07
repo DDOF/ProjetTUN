@@ -1,7 +1,3 @@
-/* echo / serveur simpliste
-   Master Informatique 2012 -- Université Aix-Marseille  
-   Emmanuel Godard
-*/
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -18,7 +14,6 @@
 int ext_in(char * hote,char * port, int tunfd)
 {
 
-  char *ip; /* adresse IPv6 en notation pointée */
   struct addrinfo *resol,indic; /* struct pour la résolution de nom */
   int s; /* descripteur de socket */
 	memset(&indic, 0, sizeof(indic));
@@ -32,19 +27,19 @@ int ext_in(char * hote,char * port, int tunfd)
 
   /* Résolution de l'hôte */
 	if ( getaddrinfo(hote,port,&indic, &resol) < 0 ){
-		perror("résolution adresse");
-		exit(2);
+		fprintf(stderr,"résolution adresse");
+		sleep(1);
 	}
 /* Switch pour connaitre le type d'ip */
 	struct sockaddr_storage ss;
 	switch (ss.ss_family) {
 		case AF_INET:
 		inet_ntop(ss.ss_family,
-			&((struct sockaddr_in *)&ss)->sin_addr, ip, MAXLIGNE);
+			&((struct sockaddr_in *)&ss)->sin_addr, hote, MAXLIGNE);
 		break;
 		case AF_INET6:
 		inet_ntop(ss.ss_family,
-			&((struct sockaddr_in6 *)&ss)->sin6_addr, ip, MAXLIGNE);
+			&((struct sockaddr_in6 *)&ss)->sin6_addr, hote, MAXLIGNE);
 		break;
 	}
   /* Création de la socket, de type TCP / IP */
@@ -56,11 +51,12 @@ int ext_in(char * hote,char * port, int tunfd)
 	fprintf(stderr,"le n° de la socket est : %i\n",s);
 
   /* Connexion */
-	fprintf(stderr,"Essai de connexion à %s (%s) sur le port %s\n\n",
-		hote,ip,port);
-	if (connect(s,resol->ai_addr,sizeof(struct sockaddr_in6))<0) {
-		perror("connexion");
-		exit(4);
+	fprintf(stderr,"Essai de connexion à %s sur le port %s\n\n",
+		hote,port);
+		fprintf(stderr, "attente connexion serveur\n");
+	while (connect(s,resol->ai_addr,sizeof(struct sockaddr_in6))<0) {
+		
+		sleep(1);
 	}
   freeaddrinfo(resol); /* /!\ Libération mémoire */
 

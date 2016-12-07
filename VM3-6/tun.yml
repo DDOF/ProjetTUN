@@ -1,0 +1,9 @@
+# avec sudo ansible-playbook -c local tun.yml
+---
+- hosts: localhost
+  tasks:
+     - shell: pkill tunnel64d
+       ignore_errors: True 
+     - name: Start tunnel
+       shell: daemon --unsafe /mnt/partage/tunnel64d /mnt/partage/tunVM3-6.cfg
+  
