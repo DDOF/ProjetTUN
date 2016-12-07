@@ -7,6 +7,10 @@
     # adresse IPv4 avec nmcli (CLI pour NetworkManager)
     # éventuellement, pour supprimer les connexions en trop, faire
     # $ nmcli connection del ansible-eth1
+     - name: Get iperf3
+       apt:
+         name: iperf3
+         state: latest      
      - shell: nmcli connection del "Connexion filaire 1"
        ignore_errors: True # permet à ansible de continuer
      - shell: nmcli connection del "Connexion filaire 2"

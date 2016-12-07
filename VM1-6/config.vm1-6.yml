@@ -11,6 +11,10 @@
        apt:
          name: daemon
          state: latest
+     - name: Get iperf3
+       apt:
+         name: iperf3
+         state: latest         
      - shell: nmcli connection del "Connexion filaire 1"
        ignore_errors: True # permet à ansible de continuer
      - shell: nmcli connection del ansible-eth1
